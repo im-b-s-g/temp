@@ -130,114 +130,251 @@
 // }
 
 // Q3.
-#include <bits/stdc++.h>
-using namespace std;
+// #include <bits/stdc++.h>
+// using namespace std;
 
-long long MOD = 1e9 + 7;
+// long long MOD = 1e9 + 7;
 
-int findFromTop(vector<int> nums, int i, deque<int> &dq)
-{
-    int tCost = 0;
-    int originalSize = dq.size();
-    int moveCount = 0;
+// int findFromTop(vector<int> &nums, int i, deque<int> &dq)
+// {
+//     cout << "-------------------------------------------------------" << endl;
+//     cout << "control in findFromTop" << endl;
+//     cout << "Value of nums[i] :" << nums[i] << endl;
+//     cout << "Value of dq.front() :" << dq.front() << endl;
+//     cout << "Value of dq.back() :" << dq.back() << endl;
+//     cout << "Value of i :" << i << endl;
+//     cout << "-------------------------------------------------------" << endl;
 
-    while (!dq.empty() && dq.front() != nums[i])
-    {
-        tCost += dq.front();
-        dq.push_back(dq.front());
-        dq.pop_front();
-        moveCount++;
+//     int tCost = 0;
+//     int originalSize = dq.size();
+//     int moveCount = 0;
 
-        if (moveCount > originalSize)
-        {
-            throw runtime_error("Infinite loop detected in findFromTop.");
-        }
-    }
-    dq.pop_front();
-    return tCost;
-}
+//     while (!dq.empty() && dq.front() != nums[i])
+//     {
+//         tCost += dq.front();
+//         dq.push_back(dq.front());
+//         dq.pop_front();
+//         moveCount++;
 
-int findFromBottom(vector<int> nums, int i, deque<int> &dq)
-{
-    int bCost = 0;
-    int originalSize = dq.size();
-    int moveCount = 0;
+//         if (moveCount > originalSize)
+//         {
+//             throw runtime_error("Infinite loop detected in findFromTop.");
+//         }
+//     }
 
-    while (!dq.empty() && dq.front() != nums[i])
-    {
-        bCost += dq.back();
-        dq.push_front(dq.back());
-        dq.pop_back();
-        moveCount++;
+//     if (!dq.empty())
+//     {
+//         tCost += dq.front();
+//         dq.pop_front();
+//     }
 
-        if (moveCount > originalSize)
-        {
-            throw runtime_error("Infinite loop detected in findFromBottom.");
-        }
-    }
+//     cout << "-------------------------------------------------------" << endl;
+//     cout << "control in findFromBottom" << endl;
+//     cout << "Value of nums[i] :" << nums[i] << endl;
+//     cout << "Value of dq.front() :" << dq.front() << endl;
+//     cout << "Value of dq.back() :" << dq.back() << endl;
+//     cout << "Value of i :" << i << endl;
+//     cout << "Value of tcost :" << tCost << endl;
+//     cout << "-------------------------------------------------------" << endl;
 
-    dq.pop_front();
-    return bCost;
-}
+//     return tCost;
+// }
 
-long long findMinOperationsCost(vector<int> nums, deque<int> &dq, int i, int n, int flag, vector<vector<long long>> &dp)
-{
-    if (i == n + 1)
-    {
-        return 0;
-    }
+// int findFromBottom(vector<int> &nums, int i, deque<int> &dq)
+// {
+//     cout << "-------------------------------------------------------" << endl;
+//     cout << "control in findFromBottom" << endl;
+//     cout << "Value of nums[i] :" << nums[i] << endl;
+//     cout << "Value of dq.front() :" << dq.front() << endl;
+//     cout << "Value of dq.back() :" << dq.back() << endl;
+//     cout << "Value of i :" << i << endl;
+//     cout << "-------------------------------------------------------" << endl;
 
-    if (dp[i][flag] != -1)
-    {
-        return dp[i][flag];
-    }
+//     int bCost = 0;
+//     int originalSize = dq.size();
+//     int moveCount = 0;
 
-    int cost = 0;
-    if (!dq.empty() && dq.front() == nums[i])
-    {
-        dq.pop_front();
-        return dp[i][flag] = min(findMinOperationsCost(nums, dq, i + 1, n, 1, dp), findMinOperationsCost(nums, dq, i + 1, n, 0, dp)) % MOD;
-    }
+//     while (!dq.empty() && dq.back() != nums[i])
+//     {
+//         bCost += dq.back();
+//         dq.push_front(dq.back());
+//         dq.pop_back();
+//         moveCount++;
 
-    if (flag)
-    {
-        cost = findFromTop(nums, i, dq);
-    }
-    else
-    {
-        cost = findFromBottom(nums, i, dq);
-    }
+//         if (moveCount > originalSize)
+//         {
+//             throw runtime_error("Infinite loop detected in findFromBottom.");
+//         }
+//     }
 
-    return dp[i][flag] = (cost + min(findMinOperationsCost(nums, dq, i + 1, n, 1, dp), findMinOperationsCost(nums, dq, i + 1, n, 0, dp))) % MOD;
-}
+//     if (!dq.empty())
+//     {
+//         bCost += dq.back();
+//         dq.pop_back();
+//     }
 
-int main()
-{
-    deque<int> dq;
-    vector<int> arr{1, 1, 1, 1, 1};
-    vector<int> nums = arr;
+//     cout << "-------------------------------------------------------" << endl;
+//     cout << "control in findFromBottom" << endl;
+//     cout << "Value of nums[i] :" << nums[i] << endl;
+//     cout << "Value of dq.front() :" << dq.front() << endl;
+//     cout << "Value of dq.back() :" << dq.back() << endl;
+//     cout << "Value of i :" << i << endl;
+//     cout << "Value of bcost :" << bCost << endl;
+//     cout << "-------------------------------------------------------" << endl;
 
-    sort(nums.begin(), nums.end());
+//     return bCost;
+// }
 
-    long long sum = 0;
-    int size = arr.size();
+// long long findMinOperationsCost(vector<int> &nums, deque<int> dq, int i, int n, int flag, vector<vector<long long>> &dp)
+// {
+//     if (i >= n && dq.empty())
+//         return 0;
+//     if (i >= n)
+//     {
+//         return INT_MAX;
+//     }
 
-    for (int i = 0; i < size; i++)
-    {
-        dq.push_back(arr[i]);
-    }
+//     if (dp[i][flag] != -1)
+//     {
+//         return dp[i][flag];
+//     }
 
-    vector<vector<long long>> dp(size + 2, vector<long long>(2, -1));
+//     int cost = 0;
+//     if (!dq.empty() && dq.front() == nums[i])
+//     {
+//         dq.pop_front();
+//         return dp[i][flag] = min(findMinOperationsCost(nums, dq, i + 1, n, 1, dp), findMinOperationsCost(nums, dq, i + 1, n, 0, dp)) % MOD;
+//     }
 
-    try
-    {
-        sum = min(findMinOperationsCost(nums, dq, 1, size, 1, dp), findMinOperationsCost(nums, dq, 1, size, 0, dp));
-        cout << "Minimum sum is: " << sum;
-    }
-    catch (const runtime_error &e)
-    {
-        cout << e.what() << endl;
-    }
+//     cout << "--------------------before flag---------------------" << endl;
+//     cout << "control in findMinOperations" << endl;
+//     cout << "Value of nums[i] :" << nums[i] << endl;
+//     cout << "size of nums :" << nums.size() << endl;
+//     for (auto x : dq)
+//         cout << x << " ";
+//     cout << endl
+//          << "Value of i :" << i << endl;
+//     cout << "Value of Flag: " << flag << endl;
+//     cout << "Value of cost: " << cost << endl;
+//     cout << "-------------------------------------------------------" << endl;
 
-    return 0;
-}
+//     if (flag)
+//     {
+//         cost = findFromTop(nums, i, dq);
+//     }
+//     else
+//     {
+//         cost = findFromBottom(nums, i, dq);
+//     }
+
+//     cout << "--------------------after flag---------------------" << endl;
+//     cout << "control in findMinOperations" << endl;
+//     cout << "Value of nums[i] :" << nums[i] << endl;
+//     cout << "size of nums :" << nums.size() << endl;
+//     for (auto x : dq)
+//         cout << x << " ";
+//     cout << endl
+//          << "Value of i :" << i << endl;
+//     cout << "Value of Flag: " << flag << endl;
+//     cout << "Value of cost: " << cost << endl;
+//     cout << "-------------------------------------------------------" << endl;
+
+//     long long nextCost = min(findMinOperationsCost(nums, dq, i + 1, n, 1, dp), findMinOperationsCost(nums, dq, i + 1, n, 0, dp));
+
+//     if (nextCost == INT_MAX)
+//     {
+//         return dp[i][flag] = INT_MAX;
+//     }
+
+//     return dp[i][flag] = (cost + nextCost) % MOD;
+// }
+
+// int main()
+// {
+//     deque<int> dq;
+//     vector<int> arr{4, 3, 2, 1};
+//     vector<int> nums = arr;
+
+//     sort(nums.begin(), nums.end());
+
+//     long long sum = 0;
+//     int size = arr.size();
+
+//     for (int i = 0; i < size; i++)
+//     {
+//         dq.push_back(arr[i]);
+//     }
+
+//     vector<vector<long long>> dp(size + 1, vector<long long>(2, -1));
+//     for (auto x : dq)
+//         cout << x << " ";
+//     try
+//     {
+//         sum = min(findMinOperationsCost(nums, dq, 0, size, 1, dp), findMinOperationsCost(nums, dq, 0, size, 0, dp));
+//         if (sum == INT_MAX)
+//         {
+//             cout << "Minimum sum is: " << -1 << endl; // Indicates no valid solution
+//         }
+//         else
+//         {
+//             cout << "Minimum sum is: " << sum << endl;
+//         }
+//     }
+//     catch (const runtime_error &e)
+//     {
+//         cout << e.what() << endl;
+//     }
+
+//     return 0;
+// }
+// Q4
+
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int findHCF(int a, int b)
+// {
+//     while (b != 0)
+//     {
+//         int temp = b;
+//         b = a % b;
+//         a = temp;
+//     }
+//     return a;
+// }
+
+// long long findlcm(vector<int> arr, int n)
+// {
+//     long long ans = arr[0];
+
+//     for (int i = 1; i < n; i++)
+//         ans = (((arr[i] * ans)) /
+//                (gcd(arr[i], ans)));
+
+//     return ans;
+// }
+
+// int main()
+// {
+//     vector<int> arr{1, 1, 1, 1};
+//     int K = 1;
+//     vector<int> values;
+
+//     for (int i = 1; i <= K; i++)
+//         values.push_back(i);
+
+//     int lcm = findlcm(arr, arr.size());
+
+//     vector<int> ans;
+
+//     for (int i = 0; i < K; i++)
+//     {
+//         if (findHCF(lcm, values[i]) == 1)
+//             ans.push_back(values[i]);
+//     }
+
+//     for (auto x : ans)
+//         cout << x << " ";
+
+//     return 0;
+// }
